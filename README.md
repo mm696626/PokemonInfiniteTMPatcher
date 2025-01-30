@@ -20,6 +20,10 @@
 ### Note for Gen 3
 * It'll appear the TMs are limited, but this is purely visual. Just use the TM and it won't get consumed
 
+### Why not Gen 1 and 2?
+* I don't believe they're necessary for this project since FireRed/LeafGreen and HeartGold/SoulSilver exist
+* Also, I don't know how to edit the ROMs for those games to support this
+
 ### Credits
 * Credit to Pseurae for their code for modifying the Gen 4 games to not have TM usage and even making them behave as HMs in the bag
   * Platinum Code Link: https://gist.github.com/Pseurae/3c47b93bec10f9a1b1792466e26c456d

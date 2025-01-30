@@ -108,6 +108,8 @@ def open_file(game_name):
         elif game_name == 'SoulSilver':
             backup_file(file_path)
             heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(file_path)
+
+        messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
     else:
         messagebox.showinfo("No File", "No file selected")
 
