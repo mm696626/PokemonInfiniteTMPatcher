@@ -38,19 +38,27 @@ def calculate_md5(file_path):
     return hash_md5.hexdigest()
 
 
-def check_rom_validity(file_path, tab_name):
+def check_rom_validity(file_path, game_name):
     file_size = os.path.getsize(file_path)
-    expected_size = EXPECTED_SIZE.get(tab_name)
+    expected_size = EXPECTED_SIZE.get(game_name)
 
     if file_size != expected_size:
-        messagebox.showerror("Invalid ROM", f"Invalid file size for {tab_name}. Expected size: {expected_size} bytes.")
+        messagebox.showerror("Invalid ROM", f"Invalid file size for {game_name}. Expected size: {expected_size} bytes.")
         return False
 
     md5_hash = calculate_md5(file_path)
-    expected_md5_list = EXPECTED_MD5.get(tab_name)
+    expected_md5_list = EXPECTED_MD5.get(game_name)
+
+    if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
+        messagebox.showerror("Unsupported ROM", "The USA Rev 1 FireRed ROM is not supported.")
+        return False
+
+    if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
+        messagebox.showerror("Unsupported ROM", "The USA Rev 1 LeafGreen ROM is not supported.")
+        return False
 
     if md5_hash not in expected_md5_list:
-        messagebox.showerror("Invalid ROM", f"Invalid MD5 for {tab_name}. Expected MD5: {expected_md5_list}.")
+        messagebox.showerror("Invalid ROM", f"Invalid MD5 for {game_name}. Expected MD5: {expected_md5_list}.")
         return False
 
     return True
