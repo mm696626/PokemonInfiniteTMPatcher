@@ -12,8 +12,8 @@ import platinumROMModifier
 
 
 EXPECTED_MD5 = {
-    'FireRed': ['e26ee0d44e809351c8ce2d73c7400cdd', '1234567890abcdef1234567890abcdef'],
-    'LeafGreen': ['612ca9473451fa42b51d1711031ed5f6', 'abcdefabcdefabcdefabcdefabcdefabcd'],
+    'FireRed': ['e26ee0d44e809351c8ce2d73c7400cdd'],
+    'LeafGreen': ['612ca9473451fa42b51d1711031ed5f6'],
     'Emerald': ['605b89b67018abcea91e693a4dd25be3'],
     'Platinum': ['d66ad7a2a0068b5d46e0781ca4953ae9', 'ab828b0d13f09469a71460a34d0de51b'],
     'HeartGold': ['258cea3a62ac0d6eb04b5a0fd764d788'],
@@ -47,10 +47,10 @@ def check_rom_validity(file_path, tab_name):
         return False
 
     md5_hash = calculate_md5(file_path)
-    expected_md5 = EXPECTED_MD5.get(tab_name)
+    expected_md5_list = EXPECTED_MD5.get(tab_name)
 
-    if md5_hash != expected_md5:
-        messagebox.showerror("Invalid ROM", f"Invalid MD5 for {tab_name}. Expected MD5: {expected_md5}.")
+    if md5_hash not in expected_md5_list:
+        messagebox.showerror("Invalid ROM", f"Invalid MD5 for {tab_name}. Expected MD5: {expected_md5_list}.")
         return False
 
     return True
@@ -70,9 +70,16 @@ def backup_file(file_path):
 
 
 def open_file(game_name):
+    if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
+        filetypes = [("GBA Files", "*.gba")]
+    elif game_name in ['HeartGold', 'SoulSilver', 'Platinum']:
+        filetypes = [("DS Files", "*.nds")]
+    else:
+        filetypes = [("All Files", "*.*")]
+
     file_path = filedialog.askopenfilename(
         title=f"Open {game_name} ROM File",
-        filetypes=[("GBA/NDS Files", "*.gba;*.nds"), ("All Files", "*.*")]
+        filetypes=filetypes
     )
 
     if file_path:
