@@ -5,6 +5,7 @@ from tkinter import ttk
 import os
 import shutil
 import gen3ROMModifier
+import heartGoldSoulSilverROMModifier
 import platinumROMModifier
 
 
@@ -42,6 +43,7 @@ def open_file(tab_name):
             platinumROMModifier.platinum_infinite_tms(file_path)
         elif tab_name == 'HeartGold/SoulSilver':
             backup_file(file_path)
+            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(file_path)
     else:
         messagebox.showinfo("No File", "No file selected")
 
