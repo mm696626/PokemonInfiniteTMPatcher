@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
-from tkinter import ttk
-import os
-import shutil
+from PIL import Image, ImageTk
+
 import gen3ROMModifier
 import heartGoldSoulSilverROMModifier
 import platinumROMModifier
-from PIL import Image, ImageTk
+import shutil
+import os
 
 # Backup function remains the same
 def backup_file(file_path):
@@ -54,12 +54,8 @@ def open_file(game_name):
 root = tk.Tk()
 root.title("Pokemon Infinite TMs Patcher")
 
-notebook = ttk.Notebook(root)
-
-frame1 = ttk.Frame(notebook)
-notebook.add(frame1, text='Games')
-
-notebook.pack(fill="both", expand=True)
+frame1 = tk.Frame(root)
+frame1.pack(padx=10, pady=10)
 
 def load_image(image_path, size=(200, 200)):
     try:
