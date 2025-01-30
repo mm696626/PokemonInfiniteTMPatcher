@@ -9,7 +9,6 @@ import platinumROMModifier
 import shutil
 import os
 
-# Backup function remains the same
 def backup_file(file_path):
     backup_folder = "backups"
     if not os.path.exists(backup_folder):
@@ -92,5 +91,4 @@ button5.grid(row=2, column=0, padx=10, pady=10)
 button6 = tk.Button(frame1, image=soul_silver_img, command=lambda: open_file('SoulSilver'))
 button6.grid(row=2, column=1, padx=10, pady=10)
 
-# Run the Tkinter event loop
 root.mainloop()
