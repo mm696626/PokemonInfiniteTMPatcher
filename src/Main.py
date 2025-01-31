@@ -63,19 +63,10 @@ def check_rom_validity(file_path, game_name):
 
     return True
 
-def backup_file(file_path):
-    backup_folder = "backups"
-    if not os.path.exists(backup_folder):
-        os.makedirs(backup_folder)
-
+def copy_file(file_path, save_path):
     file_name = os.path.basename(file_path)
-    backup_path = os.path.join(backup_folder, file_name)
-
-    shutil.copy2(file_path, backup_path)
-    print(f"Backup of {file_name} created at {backup_path}.")
-
-    return backup_path
-
+    shutil.copy2(file_path, save_path)
+    print(f"Copy of {file_name} created at {save_path}.")
 
 def open_file(game_name):
     if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
@@ -94,32 +85,34 @@ def open_file(game_name):
         if not check_rom_validity(file_path, game_name):
             return
 
+        save_path = filedialog.asksaveasfilename(
+            title=f"Save Modified {game_name} ROM File",
+            defaultextension=".gba" if game_name in ['FireRed', 'LeafGreen', 'Emerald'] else ".nds",
+            filetypes=filetypes
+        )
+
+        copy_file(file_path, save_path)
+
         if game_name == 'FireRed':
-            backup_file(file_path)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x124EA0, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x124F6C, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x125C74, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x124EA0, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x124F6C, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x125C74, 0xA9, 0x90)
         elif game_name == 'LeafGreen':
-            backup_file(file_path)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x124E78, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x124F44, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x125C4C, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x124E78, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x124F44, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x125C4C, 0xA9, 0x90)
         elif game_name == 'Emerald':
-            backup_file(file_path)
-            gen3ROMModifier.modify_byte_in_file(file_path, 0x1B6EE0, 0xA9, 0x90)
+            gen3ROMModifier.modify_byte_in_file(save_path, 0x1B6EE0, 0xA9, 0x90)
         elif game_name == 'Platinum':
-            backup_file(file_path)
-            platinumROMModifier.platinum_infinite_tms(file_path)
+            platinumROMModifier.platinum_infinite_tms(save_path)
         elif game_name == 'HeartGold':
-            backup_file(file_path)
-            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(file_path)
+            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
         elif game_name == 'SoulSilver':
-            backup_file(file_path)
-            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(file_path)
+            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
         messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
     else:
-        messagebox.showinfo("No File", "No file selected")
+        pass
 
 root = tk.Tk()
 root.title("Pokemon Infinite TMs Patcher")
