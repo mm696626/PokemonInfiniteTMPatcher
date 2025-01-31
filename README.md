@@ -6,8 +6,8 @@
 ### Setup to get this tool working
 * Have one of the following ROMs
   * ----------- Gen 3 -----------
-  * Pokemon - FireRed Version (USA, Europe) (Rev 1 won't work)
-  * Pokemon - LeafGreen Version (USA, Europe) (Rev 1 won't work)
+  * Pokemon - FireRed Version (USA, Europe) (Rev 1 works too)
+  * Pokemon - LeafGreen Version (USA, Europe) (Rev 1 works too)
   * Pokemon - Emerald Version (USA, Europe)
   * ----------- Gen 4 -----------
   * Pokemon - Platinum Version (USA) (Rev 1 works too)
