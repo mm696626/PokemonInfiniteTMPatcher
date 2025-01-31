@@ -82,6 +82,9 @@ def open_file(game_name):
             filetypes=filetypes
         )
 
+        if not save_path:
+            return
+
         copy_file(file_path, save_path)
         md5_hash = calculate_md5(file_path)
 
