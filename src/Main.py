@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import hashlib
 import os
@@ -120,6 +121,8 @@ def open_file(game_name):
 
 root = tk.Tk()
 root.title("Pokemon Infinite TMs Patcher")
+icon = PhotoImage(file='images/tm-icon.png')
+root.iconphoto(True, icon)
 
 frame1 = tk.Frame(root)
 frame1.pack(padx=10, pady=10)
