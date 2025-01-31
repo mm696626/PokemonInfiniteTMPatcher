@@ -12,8 +12,8 @@ import platinumROMModifier
 
 
 EXPECTED_MD5 = {
-    'FireRed': ['e26ee0d44e809351c8ce2d73c7400cdd'],
-    'LeafGreen': ['612ca9473451fa42b51d1711031ed5f6'],
+    'FireRed': ['e26ee0d44e809351c8ce2d73c7400cdd', '51901a6e40661b3914aa333c802e24e8'],
+    'LeafGreen': ['612ca9473451fa42b51d1711031ed5f6', '9d33a02159e018d09073e700e1fd10fd'],
     'Emerald': ['605b89b67018abcea91e693a4dd25be3'],
     'Platinum': ['d66ad7a2a0068b5d46e0781ca4953ae9', 'ab828b0d13f09469a71460a34d0de51b'],
     'HeartGold': ['258cea3a62ac0d6eb04b5a0fd764d788'],
@@ -49,14 +49,6 @@ def check_rom_validity(file_path, game_name):
     md5_hash = calculate_md5(file_path)
     expected_md5_list = EXPECTED_MD5.get(game_name)
 
-    if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
-        messagebox.showerror("Unsupported ROM", "The USA Rev 1 FireRed ROM is not supported.")
-        return False
-
-    if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
-        messagebox.showerror("Unsupported ROM", "The USA Rev 1 LeafGreen ROM is not supported.")
-        return False
-
     if md5_hash not in expected_md5_list:
         messagebox.showerror("Invalid ROM", f"Invalid MD5 for {game_name}. Expected MD5: {expected_md5_list}.")
         return False
@@ -64,9 +56,7 @@ def check_rom_validity(file_path, game_name):
     return True
 
 def copy_file(file_path, save_path):
-    file_name = os.path.basename(file_path)
     shutil.copy2(file_path, save_path)
-    print(f"Copy of {file_name} created at {save_path}.")
 
 def open_file(game_name):
     if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
@@ -92,6 +82,20 @@ def open_file(game_name):
         )
 
         copy_file(file_path, save_path)
+        md5_hash = calculate_md5(file_path)
+
+        if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
+            gen3ROMModifier.firered_leafgreen_downgrade(save_path, "firered_leafgreen_downgrade_diffs/firered.txt")
+            if not check_rom_validity(save_path, game_name):
+                messagebox.showinfo("ROM Downgrade Failed", ":(")
+                return
+
+        if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
+            gen3ROMModifier.firered_leafgreen_downgrade(save_path, "firered_leafgreen_downgrade_diffs/leafgreen.txt")
+            if not check_rom_validity(save_path, game_name):
+                messagebox.showinfo("ROM Downgrade Failed", ":(")
+                return
+
 
         if game_name == 'FireRed':
             gen3ROMModifier.modify_byte_in_file(save_path, 0x124EA0, 0xA9, 0x90)
