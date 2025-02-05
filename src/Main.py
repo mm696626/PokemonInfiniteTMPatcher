@@ -89,14 +89,16 @@ def open_file(game_name):
         md5_hash = calculate_md5(file_path)
 
         if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
-            gen3ROMModifier.firered_leafgreen_downgrade(save_path, "firered_leafgreen_downgrade_diffs/firered.txt")
-            if not check_rom_validity(save_path, game_name):
+            gen3ROMModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/firered.ips")
+            patched_md5_hash = calculate_md5(save_path)
+            if not patched_md5_hash == 'e26ee0d44e809351c8ce2d73c7400cdd':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
 
         if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
-            gen3ROMModifier.firered_leafgreen_downgrade(save_path, "firered_leafgreen_downgrade_diffs/leafgreen.txt")
-            if not check_rom_validity(save_path, game_name):
+            gen3ROMModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/leafgreen.ips")
+            patched_md5_hash = calculate_md5(save_path)
+            if not patched_md5_hash == '612ca9473451fa42b51d1711031ed5f6':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
 
