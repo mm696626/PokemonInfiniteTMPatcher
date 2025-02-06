@@ -110,13 +110,13 @@ def open_file(game_name):
 def show_patch_options(game_name, save_path):
     def apply_patches():
         if game_name == 'FireRed':
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x124EA0, 0xA9, 0x90)
                 romByteModifier.modify_byte_in_file(save_path, 0x124F6C, 0xA9, 0x90)
                 romByteModifier.modify_byte_in_file(save_path, 0x125C74, 0xA9, 0x90)
-            if running_shoes_var.get():
+            if running_shoes.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x0BD494, 0x08, 0x00)
-            if evolutions_var.get():
+            if national_dex_evos.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE91A, 0x97, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE91B, 0x28, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE91C, 0x14, 0x14)
@@ -124,43 +124,43 @@ def show_patch_options(game_name, save_path):
 
 
         elif game_name == 'LeafGreen':
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x124E78, 0xA9, 0x90)
                 romByteModifier.modify_byte_in_file(save_path, 0x124F44, 0xA9, 0x90)
                 romByteModifier.modify_byte_in_file(save_path, 0x125C4C, 0xA9, 0x90)
-            if running_shoes_var.get():
+            if running_shoes.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x0BD468, 0x08, 0x00)
-            if evolutions_var.get():
+            if national_dex_evos.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE8EE, 0x97, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE8EF, 0x28, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE8F0, 0x14, 0x14)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE8F1, 0xDD, 0xE0)
 
         elif game_name == 'Emerald':
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x1B6EE0, 0xA9, 0x90)
-            if running_shoes_var.get():
+            if running_shoes.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x11A1E8, 0x08, 0x00)
 
         elif game_name == 'Platinum':
-            if frame_unlimiter_var.get():
+            if disable_frame_limiter.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x004DF8, 0x25, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x004DF9, 0x63, 0x00)
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 platinumROMModifier.platinum_infinite_tms(save_path)
 
         elif game_name == 'HeartGold':
-            if frame_unlimiter_var.get():
+            if disable_frame_limiter.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x004E28, 0x25, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x004E29, 0x63, 0x00)
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
         elif game_name == 'SoulSilver':
-            if frame_unlimiter_var.get():
+            if disable_frame_limiter.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x004E28, 0x25, 0x00)
                 romByteModifier.modify_byte_in_file(save_path, 0x004E29, 0x63, 0x00)
-            if infinite_tms_var.get():
+            if infinite_tms.get():
                 heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
         patch_window.destroy()
@@ -173,18 +173,18 @@ def show_patch_options(game_name, save_path):
     patch_window.title(f"Select Patches for {game_name}")
     patch_window.protocol("WM_DELETE_WINDOW", on_window_close)
 
-    infinite_tms_var = tk.BooleanVar()
-    running_shoes_var = tk.BooleanVar()
-    evolutions_var = tk.BooleanVar()
-    frame_unlimiter_var = tk.BooleanVar()
+    infinite_tms = tk.BooleanVar()
+    running_shoes = tk.BooleanVar()
+    national_dex_evos = tk.BooleanVar()
+    disable_frame_limiter = tk.BooleanVar()
 
-    tk.Checkbutton(patch_window, text="Infinite TMs", variable=infinite_tms_var).pack(anchor="w")
+    tk.Checkbutton(patch_window, text="Infinite TMs", variable=infinite_tms).pack(anchor="w")
     if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
-        tk.Checkbutton(patch_window, text="Running Shoes Indoors", variable=running_shoes_var).pack(anchor="w")
+        tk.Checkbutton(patch_window, text="Running Shoes Indoors", variable=running_shoes).pack(anchor="w")
     if game_name in ['FireRed', 'LeafGreen']:
-        tk.Checkbutton(patch_window, text="Evolutions Don't Require National Dex", variable=evolutions_var).pack(anchor="w")
+        tk.Checkbutton(patch_window, text="Evolutions Don't Require National Dex", variable=national_dex_evos).pack(anchor="w")
     if game_name in ['Platinum', 'HeartGold', 'SoulSilver']:
-        tk.Checkbutton(patch_window, text="Frame Unlimiter", variable=frame_unlimiter_var).pack(anchor="w")
+        tk.Checkbutton(patch_window, text="Disable Frame Limiter", variable=disable_frame_limiter).pack(anchor="w")
 
     tk.Button(patch_window, text="Apply Patches", command=apply_patches).pack(pady=10)
 
