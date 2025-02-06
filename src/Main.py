@@ -122,7 +122,6 @@ def show_patch_options(game_name, save_path):
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE91C, 0x14, 0x14)
                 romByteModifier.modify_byte_in_file(save_path, 0x0CE91D, 0xDD, 0xE0)
 
-
         elif game_name == 'LeafGreen':
             if infinite_tms.get():
                 romByteModifier.modify_byte_in_file(save_path, 0x124E78, 0xA9, 0x90)
@@ -187,7 +186,6 @@ def show_patch_options(game_name, save_path):
         tk.Checkbutton(patch_window, text="Disable Frame Limiter", variable=disable_frame_limiter).pack(anchor="w")
 
     tk.Button(patch_window, text="Apply Patches", command=apply_patches).pack(pady=10)
-
     patch_window.wait_window(patch_window)
 
 root = tk.Tk()
