@@ -7,7 +7,7 @@ import hashlib
 import os
 import shutil
 
-import gen3ROMModifier
+import romByteModifier
 import heartGoldSoulSilverROMModifier
 import platinumROMModifier
 
@@ -89,43 +89,109 @@ def open_file(game_name):
         md5_hash = calculate_md5(file_path)
 
         if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
-            gen3ROMModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/firered.ips")
+            romByteModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/firered.ips")
             patched_md5_hash = calculate_md5(save_path)
             if not patched_md5_hash == 'e26ee0d44e809351c8ce2d73c7400cdd':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
 
         if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
-            gen3ROMModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/leafgreen.ips")
+            romByteModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/leafgreen.ips")
             patched_md5_hash = calculate_md5(save_path)
             if not patched_md5_hash == '612ca9473451fa42b51d1711031ed5f6':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
 
-
-        if game_name == 'FireRed':
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x124EA0, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x124F6C, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x125C74, 0xA9, 0x90)
-        elif game_name == 'LeafGreen':
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x124E78, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x124F44, 0xA9, 0x90)
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x125C4C, 0xA9, 0x90)
-        elif game_name == 'Emerald':
-            gen3ROMModifier.modify_byte_in_file(save_path, 0x1B6EE0, 0xA9, 0x90)
-        elif game_name == 'Platinum':
-            platinumROMModifier.platinum_infinite_tms(save_path)
-        elif game_name == 'HeartGold':
-            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
-        elif game_name == 'SoulSilver':
-            heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
-
-        messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
+        show_patch_options(game_name, save_path)
     else:
         pass
 
+
+def show_patch_options(game_name, save_path):
+    def apply_patches():
+        if game_name == 'FireRed':
+            if infinite_tms_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x124EA0, 0xA9, 0x90)
+                romByteModifier.modify_byte_in_file(save_path, 0x124F6C, 0xA9, 0x90)
+                romByteModifier.modify_byte_in_file(save_path, 0x125C74, 0xA9, 0x90)
+            if running_shoes_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x0BD494, 0x08, 0x00)
+            if evolutions_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE91A, 0x97, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE91B, 0x28, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE91C, 0x14, 0x14)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE91D, 0xDD, 0xE0)
+
+
+        elif game_name == 'LeafGreen':
+            if infinite_tms_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x124E78, 0xA9, 0x90)
+                romByteModifier.modify_byte_in_file(save_path, 0x124F44, 0xA9, 0x90)
+                romByteModifier.modify_byte_in_file(save_path, 0x125C4C, 0xA9, 0x90)
+            if running_shoes_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x0BD468, 0x08, 0x00)
+            if evolutions_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE8EE, 0x97, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE8EF, 0x28, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE8F0, 0x14, 0x14)
+                romByteModifier.modify_byte_in_file(save_path, 0x0CE8F1, 0xDD, 0xE0)
+
+        elif game_name == 'Emerald':
+            if infinite_tms_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x1B6EE0, 0xA9, 0x90)
+            if running_shoes_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x11A1E8, 0x08, 0x00)
+
+        elif game_name == 'Platinum':
+            if frame_unlimiter_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x004DF8, 0x25, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x004DF9, 0x63, 0x00)
+            if infinite_tms_var.get():
+                platinumROMModifier.platinum_infinite_tms(save_path)
+
+        elif game_name == 'HeartGold':
+            if frame_unlimiter_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x004E28, 0x25, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x004E29, 0x63, 0x00)
+            if infinite_tms_var.get():
+                heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
+
+        elif game_name == 'SoulSilver':
+            if frame_unlimiter_var.get():
+                romByteModifier.modify_byte_in_file(save_path, 0x004E28, 0x25, 0x00)
+                romByteModifier.modify_byte_in_file(save_path, 0x004E29, 0x63, 0x00)
+            if infinite_tms_var.get():
+                heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
+
+        patch_window.destroy()
+        messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
+
+    def on_window_close():
+        patch_window.destroy()
+
+    patch_window = tk.Toplevel()
+    patch_window.title(f"Select Patches for {game_name}")
+    patch_window.protocol("WM_DELETE_WINDOW", on_window_close)
+
+    infinite_tms_var = tk.BooleanVar()
+    running_shoes_var = tk.BooleanVar()
+    evolutions_var = tk.BooleanVar()
+    frame_unlimiter_var = tk.BooleanVar()
+
+    tk.Checkbutton(patch_window, text="Infinite TMs", variable=infinite_tms_var).pack(anchor="w")
+    if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
+        tk.Checkbutton(patch_window, text="Running Shoes Indoors", variable=running_shoes_var).pack(anchor="w")
+    if game_name in ['FireRed', 'LeafGreen']:
+        tk.Checkbutton(patch_window, text="Evolutions Don't Require National Dex", variable=evolutions_var).pack(anchor="w")
+    if game_name in ['Platinum', 'HeartGold', 'SoulSilver']:
+        tk.Checkbutton(patch_window, text="Frame Unlimiter", variable=frame_unlimiter_var).pack(anchor="w")
+
+    tk.Button(patch_window, text="Apply Patches", command=apply_patches).pack(pady=10)
+
+    patch_window.wait_window(patch_window)
+
 root = tk.Tk()
-root.title("Pokemon Infinite TMs Patcher")
+root.title("Pokemon QoL Patcher")
 icon = PhotoImage(file='images/tm-icon.png')
 root.iconphoto(True, icon)
 
