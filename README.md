@@ -9,6 +9,8 @@
   * Pokemon - FireRed Version (USA, Europe) (Rev 1 works too)
   * Pokemon - LeafGreen Version (USA, Europe) (Rev 1 works too)
   * Pokemon - Emerald Version (USA, Europe)
+  * Pokemon Colosseum (USA)
+  * Pokemon XD - Gale of Darkness (USA)
   * ----------- Gen 4 -----------
   * Pokemon - Platinum Version (USA) (Rev 1 works too)
   * Pokemon - HeartGold Version (USA)
