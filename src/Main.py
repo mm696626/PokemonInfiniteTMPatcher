@@ -10,6 +10,7 @@ import shutil
 import romByteModifier
 import heartGoldSoulSilverROMModifier
 import platinumROMModifier
+import gamecubeISOModifier
 
 
 EXPECTED_MD5 = {
@@ -18,7 +19,9 @@ EXPECTED_MD5 = {
     'Emerald': ['605b89b67018abcea91e693a4dd25be3'],
     'Platinum': ['d66ad7a2a0068b5d46e0781ca4953ae9', 'ab828b0d13f09469a71460a34d0de51b'],
     'HeartGold': ['258cea3a62ac0d6eb04b5a0fd764d788'],
-    'SoulSilver': ['8a6c8888bed9e1dce952f840351b73f2']
+    'SoulSilver': ['8a6c8888bed9e1dce952f840351b73f2'],
+    'Colosseum': ['e3f389dc5662b9f941769e370195ec90'],
+    'XD': ['3bc1671806cf763a8712a5d398f62ad3']
 }
 
 EXPECTED_SIZE = {
@@ -27,7 +30,9 @@ EXPECTED_SIZE = {
     'Emerald': 16777216,
     'Platinum': 134217728,
     'HeartGold': 134217728,
-    'SoulSilver': 134217728
+    'SoulSilver': 134217728,
+    'Colosseum': 1459978240,
+    'XD': 1459978240
 }
 
 
@@ -64,6 +69,8 @@ def open_file(game_name):
         filetypes = [("GBA Files", "*.gba")]
     elif game_name in ['HeartGold', 'SoulSilver', 'Platinum']:
         filetypes = [("DS Files", "*.nds")]
+    elif game_name in ['Colosseum', 'XD']:
+        filetypes = [("GameCube ISO Files", "*.iso")]
     else:
         filetypes = [("All Files", "*.*")]
 
@@ -78,7 +85,7 @@ def open_file(game_name):
 
         save_path = filedialog.asksaveasfilename(
             title=f"Save Modified {game_name} ROM File",
-            defaultextension=".gba" if game_name in ['FireRed', 'LeafGreen', 'Emerald'] else ".nds",
+            defaultextension=".iso" if game_name in ['Colosseum', 'XD'] else ".gba" if game_name in ['FireRed', 'LeafGreen', 'Emerald'] else ".nds",
             filetypes=filetypes
         )
 
@@ -89,18 +96,23 @@ def open_file(game_name):
         md5_hash = calculate_md5(file_path)
 
         if game_name == 'FireRed' and md5_hash == '51901a6e40661b3914aa333c802e24e8':
-            romByteModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/firered.ips")
+            romByteModifier.apply_ips_patch(file_path, save_path, "patches/firered_downgrade.ips")
             patched_md5_hash = calculate_md5(save_path)
             if not patched_md5_hash == 'e26ee0d44e809351c8ce2d73c7400cdd':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
 
         if game_name == 'LeafGreen' and md5_hash == '9d33a02159e018d09073e700e1fd10fd':
-            romByteModifier.firered_leafgreen_downgrade(file_path, save_path, "firered_leafgreen_downgrade_patches/leafgreen.ips")
+            romByteModifier.apply_ips_patch(file_path, save_path, "patches/leafgreen_downgrade.ips")
             patched_md5_hash = calculate_md5(save_path)
             if not patched_md5_hash == '612ca9473451fa42b51d1711031ed5f6':
                 messagebox.showinfo("ROM Downgrade Failed", ":(")
                 return
+
+        if game_name == 'Colosseum' or game_name == 'XD':
+            dolString = "start.dol"
+            gamecubeISOModifier.read(file_path, dolString.encode("ascii"), "clean.dol")
+            copy_file("clean.dol", "modified.dol")
 
         show_patch_options(game_name, save_path)
     else:
@@ -162,8 +174,32 @@ def show_patch_options(game_name, save_path):
             if infinite_tms.get():
                 heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
+        elif game_name == 'Colosseum':
+            if infinite_tms.get():
+                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/colo_infinite_tms.ips")
+            if save_anywhere.get():
+                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/colo_save_anywhere.ips")
+
+        elif game_name == 'XD':
+            if infinite_tms.get():
+                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/xd_infinite_tms.ips")
+            if disable_battle_animations.get():
+                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/xd_disable_battle_animations.ips")
+
+        if game_name == 'Colosseum' or game_name == 'XD':
+            dolString = "start.dol"
+            gamecubeISOModifier.write(save_path, dolString.encode("ascii"), "modified.dol")
+
         patch_window.destroy()
         messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
+
+        if os.path.exists("clean.dol"):
+            os.remove("clean.dol")
+            print(f"{"clean.dol"} has been deleted")
+
+        if os.path.exists("modified.dol"):
+            os.remove("modified.dol")
+            print(f"{"modified.dol"} has been deleted")
 
     def on_window_close():
         patch_window.destroy()
@@ -176,6 +212,8 @@ def show_patch_options(game_name, save_path):
     running_shoes = tk.BooleanVar()
     national_dex_evos = tk.BooleanVar()
     disable_frame_limiter = tk.BooleanVar()
+    save_anywhere = tk.BooleanVar()
+    disable_battle_animations = tk.BooleanVar()
 
     tk.Checkbutton(patch_window, text="Infinite TMs", variable=infinite_tms).pack(anchor="w")
     if game_name in ['FireRed', 'LeafGreen', 'Emerald']:
@@ -184,6 +222,10 @@ def show_patch_options(game_name, save_path):
         tk.Checkbutton(patch_window, text="Evolutions Don't Require National Dex", variable=national_dex_evos).pack(anchor="w")
     if game_name in ['Platinum', 'HeartGold', 'SoulSilver']:
         tk.Checkbutton(patch_window, text="Disable Frame Limiter", variable=disable_frame_limiter).pack(anchor="w")
+    if game_name in ['Colosseum']:
+        tk.Checkbutton(patch_window, text="Save Anywhere (Press R in overworld)", variable=save_anywhere).pack(anchor="w")
+    if game_name in ['XD']:
+        tk.Checkbutton(patch_window, text="Disable Battle Animations", variable=disable_battle_animations).pack(anchor="w")
 
     tk.Button(patch_window, text="Apply Patches", command=apply_patches).pack(pady=10)
     patch_window.wait_window(patch_window)
@@ -212,6 +254,8 @@ emerald_img = load_image("images/emerald.png")
 platinum_img = load_image("images/platinum.png")
 heart_gold_img = load_image("images/heartgold.png")
 soul_silver_img = load_image("images/soulsilver.png")
+colosseum_img = load_image("images/colosseum.png")
+xd_img = load_image("images/xd.png")
 
 button1 = tk.Button(frame1, image=fire_red_img, command=lambda: open_file('FireRed'))
 button1.grid(row=0, column=0, padx=10, pady=10)
@@ -220,15 +264,21 @@ button2 = tk.Button(frame1, image=leaf_green_img, command=lambda: open_file('Lea
 button2.grid(row=0, column=1, padx=10, pady=10)
 
 button3 = tk.Button(frame1, image=emerald_img, command=lambda: open_file('Emerald'))
-button3.grid(row=1, column=0, padx=10, pady=10)
+button3.grid(row=0, column=2, padx=10, pady=10)
 
 button4 = tk.Button(frame1, image=platinum_img, command=lambda: open_file('Platinum'))
-button4.grid(row=1, column=1, padx=10, pady=10)
+button4.grid(row=0, column=3, padx=10, pady=10)
 
 button5 = tk.Button(frame1, image=heart_gold_img, command=lambda: open_file('HeartGold'))
-button5.grid(row=2, column=0, padx=10, pady=10)
+button5.grid(row=1, column=0, padx=10, pady=10)
 
 button6 = tk.Button(frame1, image=soul_silver_img, command=lambda: open_file('SoulSilver'))
-button6.grid(row=2, column=1, padx=10, pady=10)
+button6.grid(row=1, column=1, padx=10, pady=10)
+
+button7 = tk.Button(frame1, image=colosseum_img, command=lambda: open_file('Colosseum'))
+button7.grid(row=1, column=2, padx=10, pady=10)
+
+button8 = tk.Button(frame1, image=xd_img, command=lambda: open_file('XD'))
+button8.grid(row=1, column=3, padx=10, pady=10)
 
 root.mainloop()

@@ -12,7 +12,7 @@ def modify_byte_in_file(file_path, offset, old_byte, new_byte):
         print(f"Error: {e}")
 
 
-def firered_leafgreen_downgrade(file_path, save_path, ips_patch_file):
+def apply_ips_patch(file_path, save_path, ips_patch_file):
     try:
         with open(ips_patch_file, 'rb') as patch_file:
             patch_data = ips.Patch.load(patch_file)
