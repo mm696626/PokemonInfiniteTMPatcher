@@ -175,16 +175,19 @@ def show_patch_options(game_name, save_path):
                 heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
         elif game_name == 'Colosseum':
-            if infinite_tms.get():
-                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/colo_infinite_tms.ips")
             if save_anywhere.get():
                 romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/colo_save_anywhere.ips")
+            if infinite_tms.get():
+                path_to_modified_dol = os.path.join(os.getcwd(), "modified.dol")
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x01FB17, 0x01, 0x00)
 
         elif game_name == 'XD':
-            if infinite_tms.get():
-                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/xd_infinite_tms.ips")
             if disable_battle_animations.get():
                 romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/xd_disable_battle_animations.ips")
+            if infinite_tms.get():
+                path_to_modified_dol = os.path.join(os.getcwd(), "modified.dol")
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x0A20BB, 0x01, 0x00)
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x40276A, 0xFF, 0x00)
 
         if game_name == 'Colosseum' or game_name == 'XD':
             dolString = "start.dol"
