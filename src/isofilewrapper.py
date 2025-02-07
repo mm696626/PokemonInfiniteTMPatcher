@@ -1,3 +1,8 @@
+"""
+Code is not written by me. Credit goes to everyone who wrote code to this repo
+Code: https://github.com/pfirsich/gciso
+"""
+
 class IsoInternalFileWrapper(object):
     """
     Wraps a file inside the .iso.

@@ -111,7 +111,7 @@ def open_file(game_name):
 
         if game_name == 'Colosseum' or game_name == 'XD':
             dolString = "start.dol"
-            gamecubeISOModifier.read(file_path, dolString.encode("ascii"), "clean.dol")
+            gamecubeISOModifier.read_gamecube(file_path, dolString.encode("ascii"), "clean.dol")
             copy_file("clean.dol", "modified.dol")
 
         show_patch_options(game_name, save_path)
@@ -188,18 +188,16 @@ def show_patch_options(game_name, save_path):
 
         if game_name == 'Colosseum' or game_name == 'XD':
             dolString = "start.dol"
-            gamecubeISOModifier.write(save_path, dolString.encode("ascii"), "modified.dol")
+            gamecubeISOModifier.write_gamecube(save_path, dolString.encode("ascii"), "modified.dol")
 
         patch_window.destroy()
         messagebox.showinfo("Done", f"Patching for {game_name} is complete!")
 
         if os.path.exists("clean.dol"):
             os.remove("clean.dol")
-            print(f"{"clean.dol"} has been deleted")
 
         if os.path.exists("modified.dol"):
             os.remove("modified.dol")
-            print(f"{"modified.dol"} has been deleted")
 
     def on_window_close():
         patch_window.destroy()

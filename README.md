@@ -28,6 +28,10 @@
 * Credit to Pseurae for their code for modifying the Gen 4 games to not have TM usage and even making them behave as HMs in the bag
   * Platinum Code Link: https://gist.github.com/Pseurae/3c47b93bec10f9a1b1792466e26c456d
   * HeartGold/SoulSilver Code Link: https://gist.github.com/Pseurae/3ef6b0285966db6f389974f8be8ab4d1
+* Credit to everybody who contributed to this repo for the Python library to extract the dol
+  * Repo Link: https://github.com/pfirsich/gciso
+* Credit to Stars and their amazing work modding XD and Colosseum (Used this tool to create the ips patches for the dol)
+  * Code is here: https://github.com/PekanMmd/Pokemon-XD-Code
 * Credit to the various forum threads I've found to find the offsets to modify in the Gen 3/4 games
   * Emerald Infinite TMs: https://www.pokecommunity.com/threads/quick-research-development-thread.205158/page-20#post-7993745
   * FireRed Infinite TMs: https://www.pokecommunity.com/threads/solved-infinite-tm-usage-in-fire-red.420956/
