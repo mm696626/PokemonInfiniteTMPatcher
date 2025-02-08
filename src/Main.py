@@ -49,17 +49,20 @@ def check_rom_validity(file_path, game_name):
     expected_size = EXPECTED_SIZE.get(game_name)
 
     if file_size != expected_size:
-        messagebox.showerror("Invalid ROM", f"Invalid file size for {game_name}. Expected size: {expected_size} bytes.")
-        return False
+        answer = messagebox.askyesno("Invalid ROM", f"Invalid file size for {game_name}. Expected size: {expected_size} bytes. You should only continue if you know what you're doing. Do you want to continue anyway?")
+        if not answer:
+            return False
 
     md5_hash = calculate_md5(file_path)
     expected_md5_list = EXPECTED_MD5.get(game_name)
 
     if md5_hash not in expected_md5_list:
-        messagebox.showerror("Invalid ROM", f"Invalid MD5 for {game_name}. Expected MD5: {expected_md5_list}.")
-        return False
+        answer = messagebox.askyesno("Invalid ROM", f"Invalid MD5 for {game_name}. Expected MD5: {expected_md5_list}. You should only continue if you know what you're doing. Do you want to continue anyway?")
+        if not answer:
+            return False
 
     return True
+
 
 def copy_file(file_path, save_path):
     shutil.copy2(file_path, save_path)
