@@ -3,7 +3,7 @@ Code is not written by me. Credit goes to everyone who wrote code to this repo
 Code: https://github.com/pfirsich/gciso
 """
 
-from src import gciso
+from gciso import gciso
 
 # gciso write isofile internalfile srcfile [--offset X] [--banner]
 def write_gamecube(isoFile, internalFile, srcFile, offset=0, banner=False):

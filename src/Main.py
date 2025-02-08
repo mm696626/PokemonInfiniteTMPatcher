@@ -175,7 +175,7 @@ def show_patch_options(game_name, save_path):
                 heartGoldSoulSilverROMModifier.heartgold_soulsilver_infinite_tms(save_path)
 
         elif game_name == 'Colosseum':
-            if save_anywhere.get():
+            if pc_anywhere.get():
                 romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/colo_save_anywhere.ips")
             if infinite_tms.get():
                 path_to_modified_dol = os.path.join(os.getcwd(), "modified.dol")
@@ -183,11 +183,14 @@ def show_patch_options(game_name, save_path):
 
         elif game_name == 'XD':
             if disable_battle_animations.get():
-                romByteModifier.apply_ips_patch("clean.dol", "modified.dol", "patches/xd_disable_battle_animations.ips")
+                path_to_modified_dol = os.path.join(os.getcwd(), "modified.dol")
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x202E14, 0x4B, 0x60)
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x202E15, 0xFE, 0x00)
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x202E16, 0xA4, 0x00)
+                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x202E17, 0x71, 0x00)
             if infinite_tms.get():
                 path_to_modified_dol = os.path.join(os.getcwd(), "modified.dol")
                 romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x0A20BB, 0x01, 0x00)
-                romByteModifier.modify_byte_in_file(path_to_modified_dol, 0x40276A, 0xFF, 0x00)
 
         if game_name == 'Colosseum' or game_name == 'XD':
             dolString = "start.dol"
@@ -213,7 +216,7 @@ def show_patch_options(game_name, save_path):
     running_shoes = tk.BooleanVar()
     national_dex_evos = tk.BooleanVar()
     disable_frame_limiter = tk.BooleanVar()
-    save_anywhere = tk.BooleanVar()
+    pc_anywhere = tk.BooleanVar()
     disable_battle_animations = tk.BooleanVar()
 
     tk.Checkbutton(patch_window, text="Infinite TMs", variable=infinite_tms).pack(anchor="w")
@@ -224,7 +227,7 @@ def show_patch_options(game_name, save_path):
     if game_name in ['Platinum', 'HeartGold', 'SoulSilver']:
         tk.Checkbutton(patch_window, text="Disable Frame Limiter", variable=disable_frame_limiter).pack(anchor="w")
     if game_name in ['Colosseum']:
-        tk.Checkbutton(patch_window, text="Save Anywhere (Press R in overworld)", variable=save_anywhere).pack(anchor="w")
+        tk.Checkbutton(patch_window, text="Access PC Anywhere (Press R in overworld)", variable=pc_anywhere).pack(anchor="w")
     if game_name in ['XD']:
         tk.Checkbutton(patch_window, text="Disable Battle Animations", variable=disable_battle_animations).pack(anchor="w")
 
