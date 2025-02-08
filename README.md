@@ -32,7 +32,7 @@
   * HeartGold/SoulSilver Code Link: https://gist.github.com/Pseurae/3ef6b0285966db6f389974f8be8ab4d1
 * Credit to everybody who contributed to this repo for the Python library to extract and write the dol back to an ISO
   * Repo Link: https://github.com/pfirsich/gciso
-* Credit to Stars and their amazing work modding XD and Colosseum (Used this tool to create the ips patches for the dol)
+* Credit to Stars and their amazing work modding XD and Colosseum (Used this tool to figure out the DOL offsets to edit and create the ips patch for PC anywhere)
   * Code is here: https://github.com/PekanMmd/Pokemon-XD-Code
 * Credit to the various forum threads I've found to find the offsets to modify in the Gen 3/4 games
   * Emerald Infinite TMs: https://www.pokecommunity.com/threads/quick-research-development-thread.205158/page-20#post-7993745
