@@ -40,5 +40,3 @@
   * LeafGreen Infinite TMs: https://www.pokecommunity.com/threads/unlimited-tm-usage-pokemon-leaf-green-usa.374831/
   * Gen 4 Disable Frame Limiter: https://www.pokecommunity.com/threads/d-p-pt-hg-ss-remove-the-framerate-limiter.378618/
   * Gen 3 Running Shoes Indoors: https://www.pokecommunity.com/threads/running-indoors-the-easy-way-fr-lg-r-s-e.291269/
-  * FireRed/LeafGreen Evolve without National Dex: https://www.pokecommunity.com/threads/firered-pok%C3%A9dex-hacking.249530/
-    * Had to find the offset for LeafGreen myself, but thankfully was pretty easy to find
